@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+puts "Boost + Vowpal Wabbit"
+exit 0

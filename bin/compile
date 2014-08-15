@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# Fail fast
+set -e
+
+# Debug
+# set -x
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+VENDOR_DIR="$BUILD_DIR/vendor"
+EXPORT_PATH="$PWD/export"
+PROFILE_PATH="$BUILD_DIR/.profile.d/vw.sh"
+
+mkdir -p $(dirname $PROFILE_PATH)
+mkdir -p $VENDOR_DIR
+
+function set-default-env (){
+  echo "export $1=\$$1:/app/vendor/$2" >> $PROFILE_PATH
+  echo "export $1=\$$1:/app/vendor/$2" >> $EXPORT_PATH
+}
+
+echo "-----> Fetching and vendoring boost"
+curl "https://s3.amazonaws.com/opendoor-deps/boost_1_56_0_heroku.tar.gz" -s -o - | tar xzf - -C "$VENDOR_DIR"
+mv "$VENDOR_DIR/boost_1_56_0" "$VENDOR_DIR/boost"
+# FYI we do this and set the export path explicitly because we cannot assume all buildpacks copy this dir over
+# We need to also leave the vendor dir repo in place, as the current app vendor gets blown away and replaced with
+# what is in the build dir
+cp -R "$VENDOR_DIR/boost" "/app/vendor/boost"
+
+set-default-env LD_LIBRARY_PATH "boost/stage/lib"
+set-default-env LIBRARY_PATH "boost/stage/lib"
+
+
+echo "-----> Fetching and vendoring vowpal wabbit"
+curl "https://s3.amazonaws.com/opendoor-deps/vowpal_wabbit_heroku.tar.gz" -s -o - | tar xzf - -C "$VENDOR_DIR"
+mv "$VENDOR_DIR/vowpal_wabbit/vowpalwabbit" "$VENDOR_DIR/vowpalwabbit"
+cp -R "$VENDOR_DIR/vowpalwabbit" "/app/vendor/vowpalwabbit"
+
+set-default-env LD_LIBRARY_PATH "vowpalwabbit"
+set-default-env LIBRARY_PATH "vowpalwabbit"
