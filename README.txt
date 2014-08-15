@@ -1,1 +1,1 @@
-Vowpal Wabbit Herou Buildpack
+Vowpal Wabbit Heroku Buildpack
