@@ -40,3 +40,5 @@ cp -R "$VENDOR_DIR/vowpalwabbit" "/app/vendor/vowpalwabbit"
 
 set-default-env LD_LIBRARY_PATH "vowpalwabbit/.libs"
 set-default-env LIBRARY_PATH "vowpalwabbit/.libs"
+
+echo "alias vw=/app/vendor/vw"
