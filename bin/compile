@@ -30,7 +30,6 @@ mv "$VENDOR_DIR/boost_1_56_0" "$VENDOR_DIR/boost"
 cp -R "$VENDOR_DIR/boost" "/app/vendor/boost"
 
 set-default-env LD_LIBRARY_PATH "boost/stage/lib"
-set-default-env LIBRARY_PATH "boost/stage/lib"
 
 
 echo "-----> Fetching and vendoring vowpal wabbit"
@@ -39,7 +38,6 @@ mv "$VENDOR_DIR/vowpal_wabbit/vowpalwabbit" "$VENDOR_DIR/vowpalwabbit"
 cp -R "$VENDOR_DIR/vowpalwabbit" "/app/vendor/vowpalwabbit"
 
 set-default-env LD_LIBRARY_PATH "vowpalwabbit/.libs"
-set-default-env LIBRARY_PATH "vowpalwabbit/.libs"
 set-default-env PATH "vowpalwabbit"
 
 alias vw=/app/vendor/vowpalwabbit/vw
